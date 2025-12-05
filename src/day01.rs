@@ -38,7 +38,7 @@ fn solve(input: &[i16], start_position: &u16, dial_size: &u16) -> u16 {
     let mut cumulative_sum: i16 = *start_position as i16;
     let mut zero_count: u16 = 0;
 
-    // Looptthrough the instructions and check when it hits zero
+    // Loop through the instructions and check when it hits zero
     // Note we also need to use that the dial loops i.e. 0 - 10 == dial_size - 10
     for &value in input {
         cumulative_sum += value;
@@ -57,19 +57,19 @@ fn solve_part2(input: &[i16], start_position: &u16, dial_size: &u16) -> u16 {
     let mut unwrapped_pos: i16 = *start_position as i16;
     let mut zero_count: u16 = 0;
 
+    // Loop through the instructions and check how many times it clicks to  zero
     for &value in input.iter() {
         let start_pos = unwrapped_pos;
         let end_pos = unwrapped_pos + value;
 
-        // 1. Get the indices of the multiples at the start and end of the segment.
         let k_start = start_pos.div_euclid(d);
         let k_end = end_pos.div_euclid(d);
 
         unwrapped_pos = end_pos.rem_euclid(d);
 
-        // 2. The naive count is the difference in indices.
         let mut crosses = (k_end - k_start).abs() as u16;
 
+        // Adjust for edge cases where we start or end exactly on zero or don't "cross" zero
         if crosses > 0 && start_pos == 0 && value < 0{
             crosses -= 1;
         } else if crosses == 0 && unwrapped_pos == 0 {
